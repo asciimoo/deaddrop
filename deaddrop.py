@@ -27,8 +27,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         global html
         self.send_response(200)
         self.end_headers()
-        if self.path.startswith('/drop/') and os.path.isdir(dropPath+self.path[6:]): return self.wfile.write(open(dropPath+self.path[6:]+'/file').read())
-        if self.path == '/files': return self.wfile.write(html % ('<ul><li>'+'</li><li>'.join(['<a href="/drop/%s">%s</a>' % (x, x) for x in os.listdir(dropPath+'/') if x.startswith('tmp')] or ['no files'])+'</li></ul>'))
+        if self.path.startswith('/drop/') and '/' not in self.path[6:] and os.path.isdir(dropPath+self.path[6:]): return self.wfile.write(open(dropPath+self.path[6:]+'/file').read())
+        if self.path == '/files': return self.wfile.write(html % ('<ul><li>'+'</li><li>'.join(['<a href="/drop/%s">%s</a>' % (x, x) for x in os.listdir(dropPath) if x.startswith('tmp')] or ['no files'])+'</li></ul>'))
         return self.wfile.write(html % '<form enctype="multipart/form-data" method="post" action="/"><p>File: <input type="file" name="file" /><input type="submit" value="Upload" /></p></form>')
 
     def do_POST(self):
