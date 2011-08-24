@@ -36,7 +36,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         dropDir = mkdtemp(dir=basePath+'/drop/')
         gpg.encrypt_file(StringIO(query.get('file')), gpgFingerprint, output=dropDir + '/file', always_trust=True)
-        self.wfile.write("<HTML>POST OK.<BR><BR>");
+        self.wfile.write("POST OK.");
+        return
 
 if __name__ == '__main__':
     gpg = gnupg.GPG(gnupghome=basePath +'/gnupg/')
